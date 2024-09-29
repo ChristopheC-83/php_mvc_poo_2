@@ -90,3 +90,13 @@ sur mon github, new repository : php_mvc_poo
 
 Dans vscode, terminal de type git bash pour ma part
 git init 
+git add . pour ajouter les fichiers dans le tampon à pousser
+git commit -m "initialisation"
+
+collage des 3 lignes de code fournies par github
+
+Et voilà !
+Notre projet est sur github !
+
+
+Nous llons mettre en place le templating des pages.
