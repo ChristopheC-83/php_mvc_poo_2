@@ -1,10 +1,13 @@
 <?php
 
+// pour plus tard
 define("ROOT", str_replace("index.php", "", (isset($_SERVER['HTTPS']) ? "https"  : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER["PHP_SELF"]));
 
-
+require_once("./controllers/Utilities.php");
 require_once("./controllers/MainController.php");
 $mainController = new MainController();
+require_once("./controllers/CharactersController.php");
+$charactersController = new CharactersController();
 
 try {
     if (empty($_GET['page'])) {
@@ -16,8 +19,12 @@ try {
         case "accueil":
             $mainController->homePage();
             break;
-        case "page1":
-            $mainController->page1Page();
+
+
+
+        case "personnages":
+            require_once('./indexComponents/charactersIndex.php');
+
             break;
         default:
             throw new Exception("La page demandée n'existe pas.");

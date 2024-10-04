@@ -1,102 +1,89 @@
-Pour ce projet, nous allons reprendre le projet MVC fait selon une méthode précédurale/fonctionnelle, la vidéo tournée juste avant, mais nous allons y incorporée POO.
+toujours la meme chose
 
-Pourquoi ?
+dans la carte, on va créer proposer un chemin
 
-bon, déjà oubliez votre apprentissage des bases de la poo !
-Comme certains d'entre vous, j'ai créé des classes animaux ou voitures.
-J'instanciais des objets 
-voiture bleue de marque citroen
-voiture rouge de marque renault....
+nopus allons non pas dans l'index mais dans l'index dédié aux personnages
 
-La poo c'est plus que ça !
-Plus que que de créer des objets, les classes vont nous permettre de passer des méthodes, des fonctions encapsulées dans les classes.
-La fonction create de l'objet personnage ne sera pas la fonction create de l'objet arme dans un jeu de role par exemple.
+ce cjemin nous envoie au controller qui nous proposera une vue similaire à celle de la création d'un personnage mais avec qq modif
 
-La poo va permettre, entre autres
-l'heritage, qui permettra de limiter les répétitions si des méthodes sont communes à plusieurs classes.
-une meileure modularité et organisation, chaque classe sera un concept spécifique. Dans le cadre d'une mise à jour, d'un upscale, le code sera plus compréhensible.
+déjà on récupère les données de ce personnage en particulier, il nous faut une nouvelle méthode getOneCharacter et où ?
+dans le charactersModel
 
-Je ne m'attarderai pas spécialement sur le MVC, une vidéo dédiée a déjà était faite à ce sujet.
+on n'a pas à chercher, les classes nous indique où ranger les choses !
 
-L'objectif est de commencer en faisant un projet relativement vierge pour que vous puissiez lancer vos propres projets  à partir de cette structure
-et ensuite seulement, nous mettrons en place un CRUD.
-Plus tard
-je viendrai surement mettre en place des features comme un systeme de connexion, d'administration, un wysiwyg, du mailing, de l'upload de fichiers... ce ne sont que des exemples... à voir par la suite...
-Si vous avez une envie, un besoin qui entre dans mes cordes, la partie commentaires est là pour ça 
+on duplique getAllCharacters
+on change le nom
+on met l'id en parametre
+on ajoute le filtre WHERE
+on lie id avec bindParam
 
-Et tout ça dans la strucutre que nous allons metre en place ensemble de ce pas !
+dans le controller, 
+on met à jour la méthode
 
-Afin d'avoir un suivi d'étape en étape, je vais poster ce projet sur github et créer une branche à chaque grande marche.
+on crée le fichier modifyCharacterPage.php dans les vue
+on lance un test
+<?php UTILITIES::showArray($character)   ?>
 
-Le lien du projet sera évidemment disponible en commentaire de cette vidéo.
+ça fonctionne, même l'onglet est personnalisé !
+on commente showArray
 
-Voilà pour l'intro !
-Allez ! On est parti !
+on peut copier coller le formulair ede création d'un personnage
+dans chaque input, on ajoute la value
+en début on pense à ajouter l'id dans un input hidden pour dire au model qui il devra modifier
 
-Toujours pareil, nous partons d'un dossier vierge avec nos images de personnages (ou autres à votre convenance...)
-Et nous mettons en place notre structure
-index.php
-les dossiers controllers / views / models /public
-Dans public, on crée les dossiers  files / javascript / style et transférer nos images.
-Dans views, on crée commons (pour le ou les templates par exemple) / components (pour les cartes de personanges ouautres) / pages
+on adapte le side avec une ternaire pour afficher le bon side et on envoie tout ça à 
+<?=ROOT?>personnages/update_character
 
-Plus tard, dans chacun de ces 3 dossiers du MVC, nous pourrons subdiviser en Admin / User et Visitor afin d'affiner notre classement de dossiers et fichiers.
+dans cet index dédié, on récupère les données
+on teste avec showArray
 
-on va s'attaquer à notre routeur, point d'entrée de notre projet
+c'est bon, on securise et on valide que rien n'est vide avant d'envoyer au controller
+on copie colle ce qu'il y a dans create
+on ajoute id
+on pourrait enlever les tests sur side qui ne pourra pas etre vide puisqu'il y a déjà au moins une valeur
+on change l'adresse de retour si message d'erreur
+comme notre id passe par POST et non GET, on est obligé de créé un pseudo-formulaire dans notre message d'erreur
 
-on va sélectionner une page en fonction de ce que nous aurons dans notre url.
-pour ne pas avoir de index.php?page = 
-et faire un GET de ce que contiendra cette variable
-on met en place notre fichier .htaccess... qui sera toujours le même !
-Un petit copier/coller qui va bien.
-
-Et on va tester s'il y a qq chose 
-si non, on ira à l'accueil, 
-si oui, on découpera l'url en fonction des slash et on déclenchera une fonction qui nous mènera sur la bonne page
-
-on nommera en français ce qui sera visible dans l'url, mais nous nommerons en anglais nos variables, classes et méthodes.
-
-donc si homePage(), vscode nous alerte d'une erreur, la fonction n'existe pas.
-Nous créons la classe controllers/MainController.php -> Class MainController{}
-
-On commence avec la méthode homePage()
-
-Dans index.php, on importe le fichier de MainController
-On crée un objet qui permettra d'appeler la méthode homePage()
-On crée également errorPage dans le MainController{}
-
-pour l'exemple, on propose d'appeler  egalement page1 et de créer la méthode page1Page()
-
-Ca fonctionne, super !
-
-On modifie la méthode homePage de maincontroller et on appelle une vue, la homePage
-
-On en fait une vraie page
-le doctype html
-un h1 - coucou dans le body pour tester
-on insere les cdn css et js récupérés sur getbootstrap
-on crée et associe un custom.scss, on le teste en mettant h1 red
-
-Dans bootstrap, on appelle la 1ere navbar , on l'ajuste
-page1 dans la navbar appele bien la page 1 !
-
-on crée un footer basique
-
-on flex tout ça pour footer en bas
-
-On va créer notre repository sur github avant de passer à la suite.
-
-sur mon github, new repository : php_mvc_poo
-
-Dans vscode, terminal de type git bash pour ma part
-git init 
-git add . pour ajouter les fichiers dans le tampon à pousser
-git commit -m "initialisation"
-
-collage des 3 lignes de code fournies par github
-
-Et voilà !
-Notre projet est sur github !
+On teste une modif ok 
+une création
+une suppression
 
 
-Nous llons mettre en place le templating des pages.
+Nous avons terminé notre CRUD en MVC organisé grace à la POO
+
+nous pouvons déployer !
+
+création d'un sous dommaine dans hostinger
+gestionniare de fichiers
+on entre dans le dossier qui porte le nom du sous domaine, ou à la racine si site principal
+
+on copie les dossiers et fichiers necessaires... et c'est parti !
+
+
+nous avons vu la segmentation par la poo
+organiser son fichier index.php
+nous avons vu les class abstraites qui ne s'instancie pas mais envoie des données / methodes à ses filles 
+des methodes utilitaires statiques pour appeler ces methodes facilement de partout
+
+petite amélioration après réflexion
+le charactercontroller pour etre découpé en chractercontrollerviex et charactercontrollerlogic
+pour différencier le controller qui envoie des vues et celui qui traite les informations.
+
+le charactersmodel aussi avec d'un acoté les appels, de l'autre les autres opération
+
+A chacun de modifier comme il le souhaite.
+
+Ce que je vous propose
+c'est de faire un CRUD des sides 
+si dans phpmyadmin j'ajoute angel
+je peux modifier mon personnage et ça lui propose le side angel.
+Nous avions créer à l'avance la classe css equivalente.
+
+Et si vous faisiez un CRUD de ces sides ?
+
+De ce propjet, je réaliserai des fonctionnallités php 
+j'ai mes petites idées mais si vous avez une envie, un besoin , dans la mesure du possible et de mes compétences
+comme disais un grand philosophe
+"audio gaire.mp3"
+
+Salutations distinguées les compagnons de code !
