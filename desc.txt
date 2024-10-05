@@ -1,89 +1,43 @@
-toujours la meme chose
+Dans ce chapitre, nous allons reprendre le projet précédent, un crud sur des personnages
 
-dans la carte, on va créer proposer un chemin
+Dans la vidéo de présentation, je vous avez évoqué la possibilité de fair eun crud sur les sides
+Nous allons le faire avec comme objectif de le sécuriser la possibilité d'agir sur ces données grace à une inscription et une gestion des roles utilisateurs
 
-nopus allons non pas dans l'index mais dans l'index dédié aux personnages
+Nous aurons les visiteurs non connectés qui verrons le site comme il était avant 
+les Users ou utilisateurs connectés qui verrons les classes disponibles
+les Creators qui pourront avoir accés au CRUD des classes qu'ils auront créés eux même
+les Admin qui pourront agir sur toutes les classes, les leurs et celles des autres
 
-ce cjemin nous envoie au controller qui nous proposera une vue similaire à celle de la création d'un personnage mais avec qq modif
+Imaginez un site avec une administration.
+Le client ne veut pas aller dans le code ou phpmyadmin, on va tout gérer de manière conviviale sur la page web.
+La gestion des classes et les couleurs.
 
-déjà on récupère les données de ce personnage en particulier, il nous faut une nouvelle méthode getOneCharacter et où ?
-dans le charactersModel
+Les methodes d'enregistrement et connexion seront génériques et reproductibles sur n'importe quel autre projet !
 
-on n'a pas à chercher, les classes nous indique où ranger les choses !
+frabriquez vous votre boite à outils !
 
-on duplique getAllCharacters
-on change le nom
-on met l'id en parametre
-on ajoute le filtre WHERE
-on lie id avec bindParam
+Commençons vite fait par le CRUD des sides
 
-dans le controller, 
-on met à jour la méthode
+Commençons par créer un controller, accessible au moins aux utilisateurs connectés, donc dans un dossier User
+Pour la sécurisation, nous adapterons plus tard.
 
-on crée le fichier modifyCharacterPage.php dans les vue
-on lance un test
-<?php UTILITIES::showArray($character)   ?>
+On copie/colle la méthode homePage
+PAs besoin d'instancier un objet de SidesModel que nous avions créé au préalable
+Il a été instancié dans le MainController duquel est étendu SidesController
 
-ça fonctionne, même l'onglet est personnalisé !
-on commente showArray
+on adapte la méthode
+on crée la vue dans un dossier Sides
 
-on peut copier coller le formulair ede création d'un personnage
-dans chaque input, on ajoute la value
-en début on pense à ajouter l'id dans un input hidden pour dire au model qui il devra modifier
+on peut créer un indexComponents qui fera suite à $url[0] classes  sidesIndex.php (on copie le charactersIndex qui servira de base puisqu'on va faire à peu prés les meme opérations)
 
-on adapte le side avec une ternaire pour afficher le bon side et on envoie tout ça à 
-<?=ROOT?>personnages/update_character
+on l'appelle ainsi que le SidesConcontroller qu'on instancie dans l'index.php de base
 
-dans cet index dédié, on récupère les données
-on teste avec showArray
+Dans url_site/classes/liste  nous avons notre tableau de données.
+Cool !
 
-c'est bon, on securise et on valide que rien n'est vide avant d'envoyer au controller
-on copie colle ce qu'il y a dans create
-on ajoute id
-on pourrait enlever les tests sur side qui ne pourra pas etre vide puisqu'il y a déjà au moins une valeur
-on change l'adresse de retour si message d'erreur
-comme notre id passe par POST et non GET, on est obligé de créé un pseudo-formulaire dans notre message d'erreur
+Nous allons en faire un tableau.
+nous utilisons le systeme de 12 colonnes de Bootstrap
+Cette partie ne sera pas la plus responsive, mais ce n'est pas le sujet de ce projet.
 
-On teste une modif ok 
-une création
-une suppression
-
-
-Nous avons terminé notre CRUD en MVC organisé grace à la POO
-
-nous pouvons déployer !
-
-création d'un sous dommaine dans hostinger
-gestionniare de fichiers
-on entre dans le dossier qui porte le nom du sous domaine, ou à la racine si site principal
-
-on copie les dossiers et fichiers necessaires... et c'est parti !
-
-
-nous avons vu la segmentation par la poo
-organiser son fichier index.php
-nous avons vu les class abstraites qui ne s'instancie pas mais envoie des données / methodes à ses filles 
-des methodes utilitaires statiques pour appeler ces methodes facilement de partout
-
-petite amélioration après réflexion
-le charactercontroller pour etre découpé en chractercontrollerviex et charactercontrollerlogic
-pour différencier le controller qui envoie des vues et celui qui traite les informations.
-
-le charactersmodel aussi avec d'un acoté les appels, de l'autre les autres opération
-
-A chacun de modifier comme il le souhaite.
-
-Ce que je vous propose
-c'est de faire un CRUD des sides 
-si dans phpmyadmin j'ajoute angel
-je peux modifier mon personnage et ça lui propose le side angel.
-Nous avions créer à l'avance la classe css equivalente.
-
-Et si vous faisiez un CRUD de ces sides ?
-
-De ce propjet, je réaliserai des fonctionnallités php 
-j'ai mes petites idées mais si vous avez une envie, un besoin , dans la mesure du possible et de mes compétences
-comme disais un grand philosophe
-"audio gaire.mp3"
-
-Salutations distinguées les compagnons de code !
+on fait ce tableau dans lequel nous allons chercher une couleur.
+celle n'existe pas encore, créons la dans la database

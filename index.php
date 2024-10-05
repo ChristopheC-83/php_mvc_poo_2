@@ -8,6 +8,8 @@ require_once("./controllers/MainController.php");
 $mainController = new MainController();
 require_once("./controllers/CharactersController.php");
 $charactersController = new CharactersController();
+require_once("./controllers/user/SidesController.php");
+$sidesController = new SidesController();
 
 try {
     if (empty($_GET['page'])) {
@@ -24,7 +26,9 @@ try {
 
         case "personnages":
             require_once('./indexComponents/charactersIndex.php');
-
+            break;
+        case "classes":
+            require_once('./indexComponents/sidesIndex.php');
             break;
         default:
             throw new Exception("La page demandée n'existe pas.");
