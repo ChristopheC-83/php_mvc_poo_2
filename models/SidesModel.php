@@ -49,12 +49,13 @@ class SidesModel extends PdoModel
         }
     }
 
-    public function createSideDB($side, $color)
+    public function createSideDB($side, $color, $author)
     {
-        $req = "INSERT INTO sides (side, color) VALUES (:side, :color)";
+        $req = "INSERT INTO sides (side, color,author ) VALUES (:side, :color, :author)";
         $stmt = $this->setDB()->prepare($req);
         $stmt->bindValue(":side", $side, PDO::PARAM_STR);
         $stmt->bindValue(":color", $color, PDO::PARAM_STR);
+        $stmt->bindValue(":author", $author, PDO::PARAM_STR);
         $stmt->execute();
         $stmt->closeCursor();
         return true;

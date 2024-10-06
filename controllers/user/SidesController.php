@@ -53,11 +53,11 @@ class SidesController extends MainController
         }
     }
 
-    public function createSide($side, $color)
+    public function createSide($side, $color, $author)
     {
         $sideNameExists = $this->sidesModel->getSideByName($side);
         if (!$sideNameExists) {
-            if ($this->sidesModel->createSideDB($side, $color)) {
+            if ($this->sidesModel->createSideDB($side, $color, $author)) {
                 header("Location: " . ROOT . "classes/liste");
             } else {
                 throw new Exception("Erreur lors de la création de la classe");

@@ -4,16 +4,19 @@
 require_once("./controllers/Utilities.php");
 require_once("./models/CharactersModel.php");
 require_once("./models/SidesModel.php");
+require_once("./models/UsersModel.php");
 
 class MainController
 {
     public $charactersModel;
     public $sidesModel;
+    public $usersModel;
 
     public function __construct()
     {
         $this->charactersModel = new CharactersModel();
         $this->sidesModel = new SidesModel();
+        $this->usersModel = new UsersModel();
     }
     
     public function homePage() {

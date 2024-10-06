@@ -1,93 +1,91 @@
-transformons le bouton modifier en formulaire
+on va se crée une fonction utilitaire pour tester la connexion
 
-nous allons renvoyer à cette même page un id, s'il correspond à l'id d'un des elements dans le tableau, on en fait un formulaire
+pour les routes acccessibles seulement aux non connectés
+on lance le testersi connectés retour à l'accueil !
+
+connexion et enregistrement par exemple
+
+à l'inverse on va bloquer la page de profile si non connecté.
+
+on va commencer par faire cette page dans UsersIndex
+puis controller
+puis vue
+
+on met à jour le lien dans navbar
+
+rien d'important ici mais libre à vous d'ajouter
+story
+avatar
+email
+lien vers tiktok, pour les plus vieux : instagram, pour les tres vieux Facebook !
+
+Peut etre même un crud pour tout ça avec comme précaution de garder le name unique !
+
+Ce qui va nous intésser maintenant, c'est la gestion des classes en fonction du niveau d'accréditation du user.
+
+On testera en utilities les niveaux
+à savoir que creator est accessible au creator ET aux admin !
+
+MAis avant tout ca, on va générer une colonne role dans notre table users
+on peut même y adresser une valeur par défaut, user pour nous
+au cas où , lors de l'inscription, on va rajouter une valeur "user" à role
+et lors de la connexion , on va récupérer cette données
+
+pour les exemple, supprimons tous les utilisateurs
+et creons 3 utilisateurs
+userman
+creatorman
+adminwoman
+
+on va changer les roles directement dans la DB
+
+le management des niveau d'administration peut être un chalenge à vous donner.
+un indice... c'est un simple crud accessibles aux admin sur le role des users inscrits.
+un petit menu déroulant comme les classes pour les personnages... j'arrête de spoiler !
 
 
-nous dirons que si il n'y a pas de post[id] ou si post[id] est différent de side[id]
-on garde l'affichage classique
+on retourne dans la liste des classes
+on va jouer avec ça maintenant
 
-SidesConcontroller
-on affiche un formulairele nom de la classe sera un input avec en valeur le nom de la classe
-on ajoute un input color 
-on pense à envoyer l'id en hidden au passage
+je souhaite que seulement les users connectés puisse avoir accés à la page des classes.
 
-ici, on envoie donc id, le nom, la couleur et l'ancien nom, c'est important, vous allez voir pourquoi !
+on sécurise le lien de la navbar, est ce que $_session[profile] existe
+mais j'ai toujours accés en tapant l'url
+on sécurise dans l'index
+si je suis connecté, je peux avoir accés à la page des classes, sinon je suis renvoyé à la page de connexion
 
+maintenant
+je souhaite que les user n'aient pas accés à la création
+il faut etre creator ou admin
+sur la page <?php if(Utilities::isCreator() ):?>)
+au cas où, on sécurise le controlle egalement sinon page d'erreur ou retour à la page de connexion
+si je me connecte en user et
+si je fais url classes/createSide, je suis rediriger à l'accueil
 
-on vérifie qu'on a bien renseigné un lien dans action
+Le user n'a pas accés aux boutons d'action non plus
 
-on récupère et sécurisons tout ça dans le sidesIndex
-Si un vide...message d'erreur avec lien de retour à la liste
+on va aller un cran plus loin 
 
-sinon envoi des infosau sidesController à la méthode modifySide
+je souhaite que les creators aient accés seulement
+aux actions sur les classes qu'ils ont créées
 
-La ere chose qu'on va vouloir vérifier est si le nom est dispo 
-Si vous avez 
-classes de personnages avec le même nom, on risque d'être embété !
-Le probleme est aussi que si on ne change pas le nom, comme on renvoit le meme nom, c'est comme s'il n'était pas dispo non plus !
+les admin accés aux actions pour toutes les classes
+on va devoir ajouter un auteur aux classes sur phpmyadmin et injecter le nom 
+on va entrer les noms en dur dans phpmyadmin 
+2 creatorMan 1 AdminWoman
 
-on cherche donc une classe avec le nouveau nom et on regarde s'il est dispo sauf s'il est egal à l'ancien nom.
+il faut injecter le nom à la creation d'une classe directement à partir de l'index puisqu'il faut être connecté de toutes façons pour créer une classe
 
-Si pas dispo, msg erreur et lien pour retour à la liste
+question : lors d'une modification par un admin, change t on l'auteur ?
+dans notre cas... non
 
-Si dispo on essaye la modif sinon erreur
-Si réussite, retour à la listeon va créer la methode dans le sides model, un update classique
-du nom et de la couleur where id = id.
+Voilà pour notre administration des classes des personnages 
 
-on vérifie sur une carte...
-Cool on a fait le U du CRUD
-On passe au D !
+N'hésitez pas à faire des tests sur les utilisateurs
+Usez et abusez de $_session
+Puis faites votre projet perso 
+N'hesitez pas à me le montrer et me montrer le code, j'aurai plaisir à échanger avec vous dessus
 
-Le bouton existe déjà....
-on en fait un formulaire.
-Ca va aller vite !
+Si vous avez des remarques ou des questions, je reste votre compagnon de code 
 
-dans la card, le btn devient un formulair equi envoie une clé unique à notre DB pour lui dire "efface moi"
-cette clé unique est bien entendue l'id
-
-modifions la card
-l'adresse deleteIndex renvoie à notre sidesIndex
-plus on repete les choses, plus on observe la même mécanique.
-Je souhaite réellement que vous puissiez mener à bien vos propres projets après ces répétitions que nous faisons ensemble.
-
-Bon dans notre index, le case, le break et qu'est ce qu'on reçoit ? un petit echo va nous dire ça...
-
-on va envoyer ça à notre controller qui va communiquer à notre model
-les classes sidesController et sidesModel evidemment
-
-on a un violent message d'erreur ca on n'arrive même pas jsuqu'à l'exception du controller.
-Ca plante déjà dans le model !
-
-soit, faisons un try/catch dans la méthode du model
-
-on ne va pas gerer le message d'erreur dans le model, ce n'est pas son role, on renverra simplement false
-le controller reprend alors la main
-
-testons avec une classe inutilisée par un personnage, ok, le D est géré !
-
-Finissons par le create !
-
-dans la page sideListePage
-créons un formulaire
-envoie à l'index, on vérifie les données reçues
-envoie au controller qui vérifie que le nom n'existe pas déjà
-si non , envoie de la donnée au model
-et voilà !
-
-testons notre nouvelle classe sur un personnage
-
-j'observe que mes perosnnages se déplacent en fonction de leur classe !?!
-allors chercher l'erreur
-facile, avec la poo on sait facilement où chercher
-j'ajoute ORDER BY characters.id ASC
-dans le CharactersModel, tout simplement
-
-On a fait notre crud des classes en 1 page !
-Si ce n'est pas déjà fait, ajoutons le lien à la navbar
-
-J'en profite pour faire une modification 
-pour ne pas avoir des liens à gérer ainsi, nous allons vite nous fair eun tableau sur lequel nous allons boucler
-
-mieux ainsi non ?
-
-passons à l'administration
+A bientôt !
