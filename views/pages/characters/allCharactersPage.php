@@ -3,7 +3,7 @@
 
 <!-- <?php Utilities::showArray($characters) ?> -->
 
-<div class="d-flex flex-wrap gap-4 justify-content-center">
+<div class="d-flex flex-wrap gap-5 justify-content-center">
     <?php foreach ($characters as $character) : ?>
         <?php require('./views/components/card.php') ?>
     <?php endforeach ?>

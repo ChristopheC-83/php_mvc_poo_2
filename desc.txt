@@ -1,43 +1,93 @@
-Dans ce chapitre, nous allons reprendre le projet précédent, un crud sur des personnages
+transformons le bouton modifier en formulaire
 
-Dans la vidéo de présentation, je vous avez évoqué la possibilité de fair eun crud sur les sides
-Nous allons le faire avec comme objectif de le sécuriser la possibilité d'agir sur ces données grace à une inscription et une gestion des roles utilisateurs
+nous allons renvoyer à cette même page un id, s'il correspond à l'id d'un des elements dans le tableau, on en fait un formulaire
 
-Nous aurons les visiteurs non connectés qui verrons le site comme il était avant 
-les Users ou utilisateurs connectés qui verrons les classes disponibles
-les Creators qui pourront avoir accés au CRUD des classes qu'ils auront créés eux même
-les Admin qui pourront agir sur toutes les classes, les leurs et celles des autres
 
-Imaginez un site avec une administration.
-Le client ne veut pas aller dans le code ou phpmyadmin, on va tout gérer de manière conviviale sur la page web.
-La gestion des classes et les couleurs.
+nous dirons que si il n'y a pas de post[id] ou si post[id] est différent de side[id]
+on garde l'affichage classique
 
-Les methodes d'enregistrement et connexion seront génériques et reproductibles sur n'importe quel autre projet !
+SidesConcontroller
+on affiche un formulairele nom de la classe sera un input avec en valeur le nom de la classe
+on ajoute un input color 
+on pense à envoyer l'id en hidden au passage
 
-frabriquez vous votre boite à outils !
+ici, on envoie donc id, le nom, la couleur et l'ancien nom, c'est important, vous allez voir pourquoi !
 
-Commençons vite fait par le CRUD des sides
 
-Commençons par créer un controller, accessible au moins aux utilisateurs connectés, donc dans un dossier User
-Pour la sécurisation, nous adapterons plus tard.
+on vérifie qu'on a bien renseigné un lien dans action
 
-On copie/colle la méthode homePage
-PAs besoin d'instancier un objet de SidesModel que nous avions créé au préalable
-Il a été instancié dans le MainController duquel est étendu SidesController
+on récupère et sécurisons tout ça dans le sidesIndex
+Si un vide...message d'erreur avec lien de retour à la liste
 
-on adapte la méthode
-on crée la vue dans un dossier Sides
+sinon envoi des infosau sidesController à la méthode modifySide
 
-on peut créer un indexComponents qui fera suite à $url[0] classes  sidesIndex.php (on copie le charactersIndex qui servira de base puisqu'on va faire à peu prés les meme opérations)
+La ere chose qu'on va vouloir vérifier est si le nom est dispo 
+Si vous avez 
+classes de personnages avec le même nom, on risque d'être embété !
+Le probleme est aussi que si on ne change pas le nom, comme on renvoit le meme nom, c'est comme s'il n'était pas dispo non plus !
 
-on l'appelle ainsi que le SidesConcontroller qu'on instancie dans l'index.php de base
+on cherche donc une classe avec le nouveau nom et on regarde s'il est dispo sauf s'il est egal à l'ancien nom.
 
-Dans url_site/classes/liste  nous avons notre tableau de données.
-Cool !
+Si pas dispo, msg erreur et lien pour retour à la liste
 
-Nous allons en faire un tableau.
-nous utilisons le systeme de 12 colonnes de Bootstrap
-Cette partie ne sera pas la plus responsive, mais ce n'est pas le sujet de ce projet.
+Si dispo on essaye la modif sinon erreur
+Si réussite, retour à la listeon va créer la methode dans le sides model, un update classique
+du nom et de la couleur where id = id.
 
-on fait ce tableau dans lequel nous allons chercher une couleur.
-celle n'existe pas encore, créons la dans la database
+on vérifie sur une carte...
+Cool on a fait le U du CRUD
+On passe au D !
+
+Le bouton existe déjà....
+on en fait un formulaire.
+Ca va aller vite !
+
+dans la card, le btn devient un formulair equi envoie une clé unique à notre DB pour lui dire "efface moi"
+cette clé unique est bien entendue l'id
+
+modifions la card
+l'adresse deleteIndex renvoie à notre sidesIndex
+plus on repete les choses, plus on observe la même mécanique.
+Je souhaite réellement que vous puissiez mener à bien vos propres projets après ces répétitions que nous faisons ensemble.
+
+Bon dans notre index, le case, le break et qu'est ce qu'on reçoit ? un petit echo va nous dire ça...
+
+on va envoyer ça à notre controller qui va communiquer à notre model
+les classes sidesController et sidesModel evidemment
+
+on a un violent message d'erreur ca on n'arrive même pas jsuqu'à l'exception du controller.
+Ca plante déjà dans le model !
+
+soit, faisons un try/catch dans la méthode du model
+
+on ne va pas gerer le message d'erreur dans le model, ce n'est pas son role, on renverra simplement false
+le controller reprend alors la main
+
+testons avec une classe inutilisée par un personnage, ok, le D est géré !
+
+Finissons par le create !
+
+dans la page sideListePage
+créons un formulaire
+envoie à l'index, on vérifie les données reçues
+envoie au controller qui vérifie que le nom n'existe pas déjà
+si non , envoie de la donnée au model
+et voilà !
+
+testons notre nouvelle classe sur un personnage
+
+j'observe que mes perosnnages se déplacent en fonction de leur classe !?!
+allors chercher l'erreur
+facile, avec la poo on sait facilement où chercher
+j'ajoute ORDER BY characters.id ASC
+dans le CharactersModel, tout simplement
+
+On a fait notre crud des classes en 1 page !
+Si ce n'est pas déjà fait, ajoutons le lien à la navbar
+
+J'en profite pour faire une modification 
+pour ne pas avoir des liens à gérer ainsi, nous allons vite nous fair eun tableau sur lequel nous allons boucler
+
+mieux ainsi non ?
+
+passons à l'administration

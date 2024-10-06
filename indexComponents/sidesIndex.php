@@ -6,70 +6,49 @@ switch ($url[1]) {
     case "liste":
         $sidesController->sidesListPage();
         break;
-    case "nouveau":
-        $charactersController->createCharacter();
-        break;
-    case "createCharacter":
+
+
+    case "modifySide":
         // Utilities::showArray($_POST);
-        $name = htmlentities($_POST['name']);
-        $image = htmlentities($_POST['image']);
-        $health = htmlentities($_POST['health']);
-        $magic = htmlentities($_POST['magic']);
-        $power = htmlentities($_POST['power']);
-        // $side = htmlentities($_POST['side']);
-        // Vérification de l'existence de 'side' dans $_POST
-        $side = isset($_POST['side']) ? htmlentities($_POST['side']) : null;
-        // Vérification si tous les champs sont remplis
-        if (empty($name) || empty($image) || empty($health) || empty($magic) || empty($power) || empty($side)) {
+        $id = htmlentities($_POST['id']);
+        $oldName = htmlentities($_POST['oldName']);
+        $side = htmlentities(trim($_POST['side']));  //pb avec des espaces lors de mes tests
+        $color = htmlentities($_POST['color']);
+        if (empty($id) || empty($side) || empty($color)) {
             $mainController->errorPage("Tous les champs sont obligatoires !!!
             <br><br>
-            <a href='./nouveau'>Retour au formulaire</a>
+            <a href='./liste'>Retour à la liste des classes</a>
             <br><br>
             OU
             ");
             return;
         }
-        $charactersController->createNewCharacter($name, $image, $health, $magic, $power, $side);
+        $sidesController->modifySide($id, $oldName, $side, $color);
+
         break;
 
-    case "deleteCharacter":
-        $id = htmlentities($_POST['id']);
-        // echo $id;
-        $charactersController->deleteCharacter($id);
-        break;
+        case "deleteIndex":
+            // echo ($_POST['id']);
+            $id = htmlentities($_POST['id']);
+            $sidesController->deleteSide($id);
+            break;
 
-    case "modifyCharacter":
-        $id = htmlentities($_POST['id']);
-        // echo $id;
-        $charactersController->modifyCharacter($id);
-        break;
-    case "updateCharacter":
-        // Utilities::showArray($_POST);
-        $id = htmlentities($_POST['id']);
-        $name = htmlentities($_POST['name']);
-        $image = htmlentities($_POST['image']);
-        $health = htmlentities($_POST['health']);
-        $magic = htmlentities($_POST['magic']);
-        $power = htmlentities($_POST['power']);
-        $side = htmlentities($_POST['side']);
-        // Vérification si tous les champs sont remplis
-        if (empty($name) || empty($image) || empty($health) || empty($magic) || empty($power)) {
-            $mainController->errorPage("Tous les champs sont obligatoires !!!
-            <br><br>
-             <form action='./modifyCharacter' method='POST'>
-                <input type='hidden' name='id' value='$id'>
-                <button type='submit' class='btn btn-primary'>Retour au formulaire</button>
-            </form>
-            <br>
-            OU
-            ");
-            return;
-        }
-        $charactersController->updateCharacter($id, $name, $image, $health, $magic, $power, $side);
-        break;
+            case "createSide":
+                // Utilities::showArray($_POST);
+                $side = htmlentities(trim($_POST['side']));
+                $color = htmlentities($_POST['color']);
+                if (empty($side) || empty($color)) {
+                    $mainController->errorPage("Tous les champs sont obligatoires !!!
+                    <br><br>
+                    <a href='./liste'>Retour à la liste des classes</a>
+                    <br><br>
+                    OU
+                    ");
+                    return;
+                }
+                $sidesController->createSide($side, $color);
+                break;
 
-        // si qq'un laisse personnages en $url[0] mais rien en 1
-        
     default:
         throw new Exception("La page Personnages demandée n'existe pas.");
 }

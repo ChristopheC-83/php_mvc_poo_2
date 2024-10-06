@@ -21,13 +21,16 @@ class CharactersModel extends PdoModel
         $req = "
             SELECT 
                 characters.*, 
-                sides.side as side_name 
+                sides.side as side_name ,
+                sides.color as side_color 
             FROM 
                 characters
             JOIN 
                 sides 
             ON 
-                characters.side_id = sides.id";
+                characters.side_id = sides.id
+            ORDER BY characters.id ASC
+                 ";
         $stmt = $this->setDB()->prepare($req);
         $stmt->execute();
         $datas = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -40,7 +43,8 @@ class CharactersModel extends PdoModel
         $req = "
             SELECT 
                 characters.*, 
-                sides.side as side_name 
+                sides.side as side_name ,
+                sides.color as side_color 
             FROM 
                 characters
             JOIN 
@@ -61,7 +65,8 @@ class CharactersModel extends PdoModel
         $req = "
             SELECT 
                 characters.*, 
-                sides.side as side_name 
+                sides.side as side_name ,
+                sides.color as side_color 
             FROM 
                 characters
             JOIN 
